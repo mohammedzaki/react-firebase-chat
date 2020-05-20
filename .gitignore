@@ -62,7 +62,6 @@ buck-out/
 .expo/*
 web-build/
 
-# Ggoogle-services.json
-
+# Ggoogle-services
 /android/app/google-services.json
 /ios/GoogleService-Info.plist
