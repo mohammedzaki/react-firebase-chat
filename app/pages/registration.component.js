@@ -152,7 +152,7 @@ const styles = StyleSheet.create({
         fontSize: offset,
     },
     nameInput: {
-        height: offset * 2,
+        height: offset * 4,
         margin: offset,
         paddingHorizontal: offset,
         borderColor: '#111111',

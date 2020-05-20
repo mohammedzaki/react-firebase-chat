@@ -33,7 +33,6 @@ export default class LoginComponent extends React.Component {
             this.loginSuccess,
             this.loginFailed
         );
-        this.loginSuccess();
     };
 
     loginSuccess = () => {
@@ -60,7 +59,7 @@ export default class LoginComponent extends React.Component {
                 <Text style={styles.title}>Email:</Text>
                 <TextInput
                     style={styles.nameInput}
-                    placeHolder="test3@gmail.com"
+                    placeHolder="test123@gmail.com"
                     onChangeText={this.onChangeTextEmail}
                     value={this.state.email}
                 />
@@ -94,7 +93,7 @@ const styles = StyleSheet.create({
         fontSize: offset,
     },
     nameInput: {
-        height: offset * 2,
+        height: offset * 4,
         margin: offset,
         paddingHorizontal: offset,
         borderColor: '#111111',

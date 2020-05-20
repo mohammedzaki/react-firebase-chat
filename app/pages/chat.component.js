@@ -5,6 +5,10 @@ import {
 
 export default class ChatComponent extends React.Component {
 
+    static navigationOptions = ({ navigation }) => ({
+        title: 'Chat mm!',
+    });
+
     render() {
         return (
             <View>
