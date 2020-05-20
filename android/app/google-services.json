@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "499638809017",
+    "firebase_url": "https://reactnlivechat-02.firebaseio.com",
+    "project_id": "reactnlivechat-02",
+    "storage_bucket": "reactnlivechat-02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:499638809017:android:eee83dcd5d38ce5f7d4668",
+        "android_client_info": {
+          "package_name": "com.reactnativefirebasechat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "499638809017-9816340afgl6iahjlheq8qrs343m9f31.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBcYrYKRJuJ6Aq49uc-3u1aWeoNC3z_UjE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "499638809017-9816340afgl6iahjlheq8qrs343m9f31.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
