@@ -2,12 +2,13 @@ import React from 'react';
 import {
     StyleSheet, Text,
     TextInput, View,
-    Button, ImageEditor
+    Button, Image
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import registrationService from "../services/registration.service";
+import auth from '@react-native-firebase/auth';
 
 export default class RegistrationComponent extends React.Component {
 
@@ -19,7 +20,7 @@ export default class RegistrationComponent extends React.Component {
         name: 'Alex B',
         email: 'test3@gmail.com',
         password: 'test123',
-        avatar: '',
+        image: null
     };
 
     onPressCreate = async () => {
@@ -47,7 +48,7 @@ export default class RegistrationComponent extends React.Component {
 
     getPermissionAsync = async () => {
         if (Constants.platform.ios) {
-            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             if (status !== 'granted') {
                 alert('Sorry, we need camera roll permissions to make this work!');
             }
@@ -60,46 +61,30 @@ export default class RegistrationComponent extends React.Component {
         );
         try {
             // only if user allows permission to camera roll
+            let user = auth().currentUser;
             if (cameraRollPerm === 'granted') {
-                console.log('choosing image granted...');
-                let pickerResult = await ImagePicker.launchImageLibraryAsync({
-                    allowsEditing: true,
-                    aspect: [4, 3],
-                });
-                console.log(
-                    'ready to upload... pickerResult json:' + JSON.stringify(pickerResult)
-                );
+                if (user) {
+                    let pickerResult = await ImagePicker.launchImageLibraryAsync({
+                        mediaTypes: ImagePicker.MediaTypeOptions.All,
+                        allowsEditing: false,
+                        aspect: [4, 3],
+                        quality: 1,
+                    });
 
-                let wantedMaxSize = 150;
-                let rawHeight = pickerResult.height;
-                let rawWidth = pickerResult.width;
-
-                let ratio = rawWidth / rawHeight;
-                let wantedWidth = wantedMaxSize;
-                let wantedHeight = wantedMaxSize / ratio;
-                // check vertical or horizontal
-                if (rawHeight > rawWidth) {
-                    wantedWidth = wantedMaxSize * ratio;
-                    wantedHeight = wantedMaxSize;
+                    this.setState({image: pickerResult.uri});
+                    console.log('ready to upload... pickerResult json:' + JSON.stringify(pickerResult));
+                    console.log('ready to upload... pickerResult uri:' + JSON.stringify(pickerResult.uri));
+                    if (!pickerResult.cancelled) {
+                        this.setState({image: pickerResult.uri});
+                        let uploadUrl = await registrationService.uploadImage(pickerResult.uri, user.uid);
+                        // console.log(uploadUrl);
+                        console.log(" - await upload successful url:" + uploadUrl);
+                        // console.log(" - await upload successful avatar state:" + this.state.avatar);
+                        await registrationService.updateAvatar(uploadUrl, user); //might failed
+                    }
+                } else {
+                    alert("You must register first!");
                 }
-                console.log("scale image to x:" + wantedWidth + " y:" + wantedHeight);
-                let resizedUri = await new Promise((resolve, reject) => {
-                    ImageEditor.cropImage(pickerResult.uri,
-                        {
-                            offset: {x: 0, y: 0},
-                            size: {width: pickerResult.width, height: pickerResult.height},
-                            displaySize: {width: wantedWidth, height: wantedHeight},
-                            resizeMode: 'contain',
-                        },
-                        (uri) => resolve(uri),
-                        () => reject(),
-                    );
-                });
-                let uploadUrl = await registrationService.uploadImage(resizedUri);
-                await this.setState({avatar: uploadUrl});
-                console.log(" - await upload successful url:" + uploadUrl);
-                console.log(" - await upload successful avatar state:" + this.state.avatar);
-                await registrationService.updateAvatar(uploadUrl); //might failed
             }
         } catch (err) {
             console.log('onImageUpload error:' + err.message);
@@ -108,6 +93,7 @@ export default class RegistrationComponent extends React.Component {
     };
 
     render() {
+        let {image} = this.state;
         return (
             <View>
                 <Text style={styles.title}>Email:</Text>
@@ -117,6 +103,7 @@ export default class RegistrationComponent extends React.Component {
                     onChangeText={this.onChangeTextEmail}
                     value={this.state.email}
                 />
+                {image && <Image source={{uri: image}} style={{width: 200, height: 200}}/>}
                 <Text style={styles.title}>Password:</Text>
                 <TextInput
                     style={styles.nameInput}

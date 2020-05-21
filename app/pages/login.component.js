@@ -5,6 +5,7 @@ import {
     Button, ImageEditor,
 } from 'react-native';
 import loginService from '../services/login.service';
+import auth from '@react-native-firebase/auth';
 
 export default class LoginComponent extends React.Component {
     static navigationOptions = {
@@ -37,10 +38,11 @@ export default class LoginComponent extends React.Component {
 
     loginSuccess = () => {
         console.log('login successful, navigate to chat.');
+        let user = auth().currentUser;
         this.props.navigation.navigate('Chat', {
             name: this.state.name,
             email: this.state.email,
-            avatar: this.state.avatar,
+            avatar: user.photoURL,
         });
     };
     loginFailed = () => {

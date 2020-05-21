@@ -1,20 +1,46 @@
 import React from 'react';
 import {
-    StyleSheet, Text, View
+    Image,
+    StyleSheet, Text, TextInput, View
 } from 'react-native';
+import {GiftedChat} from 'react-native-gifted-chat';
+import chatService from '../services/chat.service';
 
 export default class ChatComponent extends React.Component {
+    state = {
+        messages: [],
+    };
 
-    static navigationOptions = ({ navigation }) => ({
-        title: 'Chat mm!',
-    });
+    get user() {
+        return {
+            name: this.props.route.params.name,
+            email: this.props.route.params.email,
+            avatar: this.props.route.params.avatar,
+            id: this.props.route.params.userId,
+            _id: this.props.route.params.userId
+        }
+    }
 
     render() {
         return (
-            <View>
-                <Text style={styles.title}>Welcome to chat App</Text>
-            </View>
+            <GiftedChat
+                messages={this.state.messages}
+                onSend={chatService.send}
+                user={this.user}
+            />
         );
+    }
+
+    componentDidMount() {
+        chatService.refOn(message =>
+            this.setState(previousState => ({
+                messages: GiftedChat.append(previousState.messages, message),
+            }))
+        );
+    }
+
+    componentWillUnmount() {
+        chatService.refOff();
     }
 }
 

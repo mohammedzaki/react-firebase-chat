@@ -1,4 +1,5 @@
 import auth from '@react-native-firebase/auth';
+import storage from '@react-native-firebase/storage';
 
 class RegistrationService {
 
@@ -20,12 +21,36 @@ class RegistrationService {
             });
     }
 
-    uploadImage = async uri => {
+    uploadImage = async (uri, userId) => {
         console.log('got image to upload. uri:' + uri);
+        const reference = storage().ref('images').child(userId);
+        const task = reference.putFile(uri);
+
+        return new Promise((resolve, reject) => {
+            task.on(
+                'state_changed',
+                () => { },
+                reject,
+                () => resolve(reference.getDownloadURL())
+            );
+        });
     }
 
-    updateAvatar = (url) => {
+    updateAvatar = (url, userf) => {
         console.log('updateAvatar url.');
+        if (userf != null) {
+            userf.updateProfile({ photoURL: url})
+                .then(function() {
+                    console.log("Updated avatar successfully. url:" + url);
+                    alert("Avatar image is saved successfully.");
+                }, function(error) {
+                    console.warn("Error update avatar.");
+                    alert("Error update avatar. Error:" + error.message);
+                });
+        } else {
+            console.log("can't update avatar, user is not login.");
+            alert("Unable to update avatar. You must login or signup first.");
+        }
     }
 }
 
