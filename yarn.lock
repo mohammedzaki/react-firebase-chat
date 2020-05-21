@@ -1412,6 +1412,16 @@
   resolved "https://registry.yarnpkg.com/@react-native-firebase/database/-/database-7.0.1.tgz#f878390478e9ea4f95bcacfc07968cc12a9830a2"
   integrity sha512-Fj5QZNdmYE4HA0mZgnjnubz0W1qe5DhR8KbxNcmOd40dsN8vGm024ZV0an2i4VCAmfNciT1IEM++hRhce4Nafg==
 
+"@react-native-firebase/firestore@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/firestore/-/firestore-7.0.1.tgz#29b7caca7e7ce823895b93377bcde5f1f9d71186"
+  integrity sha512-yYPAOXlAotFfhLTsa3GLlJDxgJhqF1jxm5cLPrNWqWCbcN2Vo6XevQhpHzST2pwuwqeEEGoq80W28XZRDe3k9g==
+
+"@react-native-firebase/messaging@^7.0.1":
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/@react-native-firebase/messaging/-/messaging-7.0.1.tgz#b18ae2852e6a26757f7bb602e1e8253476e4ee5a"
+  integrity sha512-d3daoHOXBHIBhn3McAcfD2tvenK1auLKfAld2U51/AFTf+6KDlcAMauCFXWSjZZR3dTo0boZf3EfWCRY1khBVQ==
+
 "@react-native-firebase/storage@^7.0.1":
   version "7.0.1"
   resolved "https://registry.yarnpkg.com/@react-native-firebase/storage/-/storage-7.0.1.tgz#8fc2a4a0f1546b5d835cc2fc02869e9d14d7aaa9"
@@ -6095,7 +6105,7 @@ react-native-lightbox@^0.8.1:
   dependencies:
     prop-types "^15.7.2"
 
-"react-native-parsed-text@github:EvanBacon/react-native-parsed-text":
+react-native-parsed-text@EvanBacon/react-native-parsed-text:
   version "0.0.22"
   resolved "https://codeload.github.com/EvanBacon/react-native-parsed-text/tar.gz/c909f64ee437796fd1b047edd73146fc89edb796"
   dependencies:

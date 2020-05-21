@@ -6,6 +6,8 @@ import {
 } from 'react-native';
 import loginService from '../services/login.service';
 import auth from '@react-native-firebase/auth';
+import messaging from '@react-native-firebase/messaging';
+import firestore from '@react-native-firebase/firestore';
 
 export default class LoginComponent extends React.Component {
     static navigationOptions = {
@@ -36,9 +38,35 @@ export default class LoginComponent extends React.Component {
         );
     };
 
+    async saveTokenToDatabase(token) {
+        // Assume user is already signed in
+        const userId = auth().currentUser.uid;
+
+        // Add the token to the users datastore
+        await firestore()
+            .collection('users')
+            .doc(userId)
+            .update({
+                tokens: firestore.FieldValue.arrayUnion(token),
+            });
+    }
+
     loginSuccess = () => {
         console.log('login successful, navigate to chat.');
         let user = auth().currentUser;
+        messaging()
+            .getToken()
+            .then(token => {
+                console.log('user token: ' + token);
+                // this.saveTokenToDatabase(token);
+            });
+
+        // Listen to whether the token changes
+        messaging().onTokenRefresh(token => {
+            console.log('user token: ' + token);
+            // this.saveTokenToDatabase(token);
+        });
+
         this.props.navigation.navigate('Chat', {
             name: this.state.name,
             email: this.state.email,
